@@ -1,0 +1,4165 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <title>S.Mat.</title>
+
+    <link rel="stylesheet"
+          href="node_modules/reveal.js/dist/reveal.css">
+
+    <link rel="stylesheet"
+          href="node_modules/reveal.js/dist/theme/white.css">
+<style>
+
+
+/* =========================================================
+   DESIGN SYSTEM 
+   ========================================================= */
+
+/* ---------- COLOR PALETTE ---------- */
+
+:root {
+    --navy: #12355B;
+    --teal: #2A9D8F;
+    --orange: #F4A261;
+
+    --background: #FAFBFC;
+    --light: #EDF2F7;
+
+    --text: #000000;
+    --line: #D7DEE8;
+
+    --red: #E63946;
+    --blue: #3A86FF;
+}
+
+
+/* ---------- FONT ---------- */
+
+/* Judul */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    font-family: "Bebas Neue", sans-serif;
+    color: var(--navy);
+
+    text-transform: none;
+    font-weight: normal;
+}
+
+/* Isi */
+.reveal p,
+.reveal li,
+.reveal table {
+    font-family: "Californian FB", serif;
+    color: var(--text);
+}
+
+
+/* ---------- BACKGROUND ---------- */
+
+.reveal {
+    background-color: var(--background);
+}
+
+
+/* ---------- TITLE ---------- */
+
+.reveal h1 {
+    font-size: 2.2em;
+}
+
+.reveal h2 {
+    font-size: 1.7em;
+}
+
+.reveal h3 {
+    font-size: 1.3em;
+}
+
+
+/* ---------- HIGHLIGHT COLORS ---------- */
+
+.navy {
+    color: var(--navy);
+}
+
+.teal {
+    color: var(--teal);
+}
+
+.orange {
+    color: var(--orange);
+}
+
+.red {
+    color: var(--red);
+}
+
+.blue {
+    color: var(--blue);
+}
+
+
+/* ---------- DEFINITION / THEOREM BOX ---------- */
+
+.box {
+    background: var(--light);
+
+    border-left: 6px solid var(--teal);
+
+    padding: 20px 30px;
+
+    border-radius: 8px;
+
+    text-align: left;
+}
+
+
+/* ---------- ORANGE ACCENT BOX ---------- */
+
+.box-orange {
+    background: var(--light);
+
+    border-left: 6px solid var(--orange);
+
+    padding: 20px 30px;
+
+    border-radius: 8px;
+
+    text-align: left;
+}
+
+
+/* ---------- FORMULA ---------- */
+
+.formula {
+    color: var(--navy);
+
+    font-size: 1.15em;
+
+    margin: 25px 0;
+}
+
+
+/* ---------- HORIZONTAL LINE ---------- */
+
+.line {
+    height: 3px;
+
+    background: var(--teal);
+
+    border: none;
+
+    margin: 20px 0;
+}
+
+
+/* ---------- SMALL LABEL ---------- */
+
+.label {
+    color: var(--teal);
+
+    font-family: "Californian FB", serif;
+
+    font-size: 0.8em;
+
+    letter-spacing: 1px;
+}
+
+
+/* ---------- TABLE ---------- */
+
+.reveal table {
+    border-collapse: collapse;
+}
+
+.reveal th {
+    background-color: var(--navy);
+    color: white;
+    padding: 10px 15px;
+}
+
+.reveal td {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--line);
+}
+
+
+/* ---------- RGB COLORS ---------- */
+
+.rgb-red {
+    color: var(--red);
+}
+
+.rgb-green {
+    color: var(--teal);
+}
+
+.rgb-blue {
+    color: var(--blue);
+}
+
+/* =======================================
+   (Definisi, Teorema, Lema, Sifat, Contoh)
+   ======================================= */
+
+/* 1. Inisialisasi SATU nomor urut untuk semua kotak */
+.reveal .slides {
+    counter-reset: mathbox;
+}
+
+/* 2. Desain Dasar Kerangka Kotak */
+.reveal .math-frame {
+    background-color: #fcfcfc;
+    border: 1px solid var(--navy); 
+    border-radius: 8px;
+    overflow: hidden; 
+    
+    /* PENGATURAN LEBAR KONSISTEN */
+    margin: 0 auto; 
+    width: 130%; /* <-- BIKIN KOTAK PENUH KE SAMPING */
+    margin-left: -15%; /* Menyeimbangkan posisi ke tengah layar */
+    display: block; /* Memaksa kotak selalu merentang maksimal */
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    font-size: 0.75em; 
+}
+
+/* 3. Desain Dasar Header Kotak */
+.reveal .math-header {
+    background-color: var(--navy); /* Warna header default: Navy */
+    padding: 6px 20px;
+    text-align: left;
+}
+
+.reveal .math-header h3 {
+    color: white !important;
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: normal;
+    font-family: "Californian FB", serif;
+}
+
+/* =======================================
+   DESAIN JUDUL SLIDE & NOMOR HALAMAN
+   ======================================= */
+
+/* Judul Slide Rata Kiri Atas */
+.reveal h2.judul-kiri {
+    text-align: left;
+    margin-top: -60px;  /* <-- INI MENGGESER JUDUL KE ATAS */
+    margin-left: -138px; /* <-- INI MENGGESER JUDUL KE KIRI */
+    font-size: 1.4em; 
+    margin-bottom: 30px; 
+    position: relative;
+    padding-bottom: 12px; 
+    width: 110%; /* Memastikan judul panjang tidak gampang turun baris */
+}
+
+/* Garis Teal otomatis di bawah judul */
+.reveal h2.judul-kiri::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 120px; /* Garis sedikit dipanjangkan biar proporsional */
+    height: 5px;  /* Garis sedikit ditebalkan */
+    background-color: var(--teal);
+}
+
+
+/* Desain Kotak Nomor Halaman di Pojok Kanan Bawah */
+.reveal .slide-number {
+    background-color: var(--navy) !important;
+    color: white !important;
+    border-radius: 0 !important; 
+    padding: 8px 18px !important; 
+    right: 20px !important;
+    bottom: 20px !important;
+    font-family: "Bebas Neue", sans-serif !important;
+    font-size: 20px !important; 
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2) !important;
+}
+
+/* 4. Perintah Tambah Nomor Urut Otomatis */
+.reveal .math-header h3::before {
+    counter-increment: mathbox;
+}
+
+/* =======================================
+   PENGATURAN TEKS OTOMATIS
+   ======================================= */
+.reveal .math-header.definisi h3::before { content: "Definisi " counter(mathbox) " "; }
+.reveal .math-header.teorema h3::before { content: "Teorema " counter(mathbox) " "; }
+.reveal .math-header.proposisi h3::before { content: "Proposisi " counter(mathbox) " "; }
+.reveal .math-header.lema h3::before { content: "Lema " counter(mathbox) " "; }
+.reveal .math-header.sifat h3::before { content: "Sifat " counter(mathbox) " "; }
+.reveal .math-header.contoh h3::before { content: "Contoh " counter(mathbox) " "; }
+.reveal .math-header.akibat h3::before { content: "Akibat " counter(mathbox) " "; }
+
+/* =======================================
+   KUSTOMISASI WARNA 
+   ======================================= */
+/* Teorema dan Lema pakai warna Teal (Hijau Tosca) */
+.reveal .math-frame.frame-teorema, 
+.reveal .math-frame.frame-proposisi,
+.reveal .math-frame.frame-lema,
+.reveal .math-frame.frame-sifat {
+    border-color: var(--teal);
+}
+.reveal .math-header.teorema, 
+.reveal .math-header.proposisi,
+.reveal .math-header.lema,
+.reveal .math-header.sifat {
+    background-color: var(--teal);
+}
+
+/* Contoh pakai warna Orange */
+.reveal .math-frame.frame-contoh {
+    border-color: var(--orange);
+}
+.reveal .math-header.contoh {
+    background-color: var(--orange);
+}
+
+/* 5. Desain Isi Konten */
+.reveal .math-content {
+    padding: 5px 25px 5px 25px; /* Jarak dari teks ke garis atas dan bawah kotak dikecilkan jadi 5px */
+    text-align: left;
+}
+
+/* Jarak antar paragraf biasa */
+.reveal .math-content p {
+    margin: 2px 0; /* Jarak antar baris teks dikecilkan jadi 2px */
+}
+
+/* Memaksa rumus MathJax agar jarak atas-bawahnya tidak terlalu lebar */
+.reveal .math-content mjx-container[display="true"] {
+    margin: 6px 0 !important; 
+}
+
+/* Menyembunyikan nomor halaman khusus untuk slide cover */
+.hide-slide-number .slide-number {
+    display: none !important;
+}
+
+/* =======================================
+   TEKS KETERANGAN DI LUAR KOTAK
+   ======================================= */
+.reveal .keterangan {
+    text-align: justify; /* <-- Ini kuncinya biar rata kanan-kiri */
+    margin-top: 20px;
+    font-size: 0.8em;
+    margin-left: -138px;  /* Menyejajarkan batas kiri dengan kotak */
+    margin-right: -138px; /* Menyejajarkan batas kanan dengan kotak */
+    line-height: 1.0; 
+}
+
+/* =======================================
+   ANIMASI KOTAK MENYEMPIT & FLY-IN KANAN
+   ======================================= */
+/* Wadah utama agar elemen bisa bebas beterbangan */
+.reveal .wadah-dinamis {
+    position: relative;
+    width: 130%;       
+    margin-left: -15%; 
+    min-height: 400px; 
+}
+
+/* Kolom KIRI: Awalnya 100% penuh dari ujung kiri ke kanan */
+.reveal .fragment.kolom-menyempit {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: absolute;
+    left: 0;         /* <-- Mulai tepat dari ujung kiri */
+    width: 100%;     /* <-- Membentang 100% penuh menyamai lebar Definisi */
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* Kolom KIRI: Saat diklik, menyempit ke kiri */
+.reveal .fragment.kolom-menyempit.visible {
+    left: 0;         /* <-- Tetap bersandar di kiri */
+    width: 48%;      /* <-- Lebarnya menciut jadi setengahnya, memaksa teks turun */
+}
+
+/* Kolom KANAN: Awalnya transparan dan ngumpet di luar layar kanan */
+.reveal .fragment.panel-terbang {
+    position: absolute;
+    right: -30%; 
+    opacity: 0 !important;
+    width: 48%;
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* Kolom KANAN: Saat diklik, terbang masuk ke posisinya */
+.reveal .fragment.panel-terbang.visible {
+    right: 0;
+    opacity: 1 !important;
+}
+
+/* ==========================================
+   CONTOH OPERASI — SATU BARIS BERGANTI
+   ========================================== */
+
+.contoh-operasi {
+    position: relative;
+    width: 130%;
+    margin-left: -15%;
+    min-height: 190px;
+}
+
+.contoh-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+/* ==========================================
+   SLIDE 12 — TEOREMA BERTAHAP
+   ========================================== */
+
+.teorema-stack {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+/* Semua kotak teorema berada pada posisi yang sama */
+.teorema-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: none;
+}
+
+.teorema-state.active {
+    display: block;
+}
+
+/* Ukuran isi kotak */
+.teorema-frame .math-content {
+    padding: 8px 25px;
+}
+
+.teorema-frame .math-content p {
+    margin: 0;
+}
+
+
+/* ==========================================
+   KETERANGAN TEOREMA
+   ========================================== */
+
+.teorema-keterangan {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+
+/* ==========================================
+   AREA BUKTI
+   ========================================== */
+
+.bukti-area {
+    width: 130%;
+    margin-left: -15%;
+    text-align: left;
+    min-height: 300px;
+}
+
+.bukti-state {
+    display: none;
+}
+
+.bukti-state.active {
+    display: block;
+}
+
+.bukti-state p {
+    margin: 5px 0;
+}
+
+.bukti-state mjx-container[display="true"] {
+    margin: 5px 0 !important;
+}
+
+/* ==========================================
+   SLIDE 12 — TEOREMA
+   ========================================== */
+
+.slide-teorema-sigma .teorema-frame {
+    width: 100%;
+    margin: 0 auto 15px auto;
+    box-sizing: border-box;
+}
+
+.slide-teorema-sigma .teorema-frame .math-content {
+    padding: 8px 28px;
+    text-align: left;
+}
+
+.slide-teorema-sigma .teorema-list {
+    margin: 0;
+    padding-left: 1.4em;
+}
+
+.slide-teorema-sigma .teorema-list li {
+    margin: 4px 0;
+    padding-left: 5px;
+}
+
+/* ==========================================
+   TINGGI KOTAK MENGIKUTI SIFAT YANG MUNCUL
+   ========================================== */
+
+.slide-teorema-sigma .teorema-frame {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+/* Sifat yang belum muncul tidak mengambil ruang */
+.slide-teorema-sigma .teorema-list li.fragment:not(.visible) {
+    display: none !important;
+}
+
+/* Sifat yang sudah muncul kembali sebagai list item */
+.slide-teorema-sigma .teorema-list li.fragment.visible {
+    display: list-item !important;
+}
+
+/* ==========================================
+   AREA BUKTI
+   ========================================== */
+
+.slide-teorema-sigma .bukti-area {
+    width: 100%;
+    margin: 8px 0 0 0;
+    text-align: left;
+}
+
+.slide-teorema-sigma .bukti-state {
+    display: none;
+}
+
+.slide-teorema-sigma .bukti-state.active {
+    display: block;
+}
+
+.slide-teorema-sigma .bukti-state p {
+    margin: 3px 0;
+    line-height: 1.0;
+}
+
+
+/* Ukuran persamaan bukti */
+.slide-teorema-sigma .bukti-state mjx-container[display="true"] {
+    margin: 3px 0 !important;
+    font-size: 72% !important;
+}
+
+
+/* Ukuran matematika inline */
+.slide-teorema-sigma .bukti-state mjx-container {
+    font-size: 85%;
+}
+
+
+/* Supaya isi tidak melebar ke samping */
+.slide-teorema-sigma .bukti-state {
+    max-width: 100%;
+}
+
+/* ==========================================
+   SLIDE 15 — NORMA FROBENIUS
+   ========================================== */
+
+.slide-norma-frobenius {
+    overflow: visible !important;
+}
+
+
+/* Area pergantian contoh → definisi */
+.norma-state-area {
+    width: 100%;
+    margin-top: 15px;
+}
+
+
+/* State disembunyikan tanpa mengambil tempat */
+.norma-state {
+    display: none;
+}
+
+.norma-state.active {
+    display: block;
+}
+
+
+/* Contoh */
+.keterangan-norma {
+    width: 130%;
+    margin-left: -15%;
+    text-align: left;
+    font-size: 0.82em;
+    margin-bottom: 5px;
+}
+
+.contoh-norma {
+    width: 130%;
+    margin-left: -15%;
+    text-align: left;
+    font-size: 0.78em;
+}
+
+.contoh-norma p {
+    margin: 8px 0 4px 0;
+}
+
+
+/* Ukuran matematika */
+.slide-norma-frobenius
+.math-content {
+    font-size: 0.82em;
+}
+
+.slide-norma-frobenius
+.math-content mjx-container[display="true"] {
+    margin: 6px 0 !important;
+    font-size: 88% !important;
+}
+
+
+/* Proposisi */
+.proposisi-frame {
+    margin-top: 18px;
+}
+
+
+/* Fragment pemindah state tidak terlihat */
+.norma-switch {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* =========================
+   SLIDE 19 — BUKTI
+   ========================= */
+
+.slide-bukti-blok {
+    overflow: visible !important;
+}
+
+.slide-bukti-blok .bukti-container {
+    width: 100%;
+    margin: 15px auto 0 auto;
+    text-align: left;
+    min-height: 420px;
+}
+
+.slide-bukti-blok .proof-state {
+    display: none;
+}
+
+.slide-bukti-blok .proof-state.active {
+    display: block;
+}
+
+.slide-bukti-blok .proof-state p {
+    margin: 5px 0;
+    line-height: 1.05;
+    font-size: 0.82em;
+}
+
+.slide-bukti-blok .proof-state mjx-container[display="true"] {
+    margin: 8px 0 !important;
+    font-size: 78% !important;
+}
+
+.slide-bukti-blok .proof-switch {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* ==========================================
+   SLIDE 2 — IMAGE RESTORATION
+   ========================================== */
+
+.slide-image-restoration {
+    overflow: hidden !important;
+}
+
+/* Area 3 gambar */
+.restoration-images {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+
+    gap: 20px !important;
+
+    width: 96% !important;
+    margin: 10px auto 0 !important;
+}
+
+
+/* ==========================================
+   SETIAP KOLOM GAMBAR
+   ========================================== */
+
+.restoration-item {
+    position: relative !important;
+
+    width: 30%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    /* Awalnya berada di kanan */
+    transform: translateX(180px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+
+/* Saat diklik → masuk ke posisinya */
+.restoration-item.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(0) !important;
+}
+
+
+/* ==========================================
+   GAMBAR
+   ========================================== */
+
+.restoration-item img {
+    width: auto !important;
+    height: 500px !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+
+    display: block !important;
+
+    border-radius: 10px !important;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+
+/* ==========================================
+   NAMA GAMBAR
+   ========================================== */
+
+.restoration-name {
+    margin-top: 18px !important;
+
+    font-family: "Californian FB", serif !important;
+    font-size: 0.95em !important;
+
+    font-weight: bold;
+
+    color: var(--navy) !important;
+
+    text-align: center;
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition:
+        opacity 0.5s ease 0.45s,
+        transform 0.5s ease 0.45s !important;
+}
+
+
+/* Nama muncul setelah gambar masuk */
+.restoration-item.visible .restoration-name {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   SLIDE 3 — PROSES RESTORASI CITRA
+   ===================================================== */
+
+.slide-restoration-process {
+    overflow: hidden !important;
+}
+
+
+/* Area gambar dan panah */
+.restoration-process {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 92%;
+    margin: 20px auto 0;
+
+    min-height: 390px;
+}
+
+
+/* =====================================================
+   GAMBAR
+   ===================================================== */
+
+.process-image {
+    width: 38%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateX(250px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.9s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+
+/* Ketika muncul */
+.process-image.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: translateX(0) !important;
+}
+
+
+/* Ukuran gambar */
+.process-image img {
+    width: auto;
+    height: 330px;
+
+    max-width: 100%;
+
+    /*
+       PENTING:
+       gambar tidak dipotong
+    */
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 8px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+
+/* =====================================================
+   PANAH
+   ===================================================== */
+
+.process-arrow {
+    width: 18%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: scale(0.7);
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease !important;
+}
+
+
+/* Panah muncul */
+.process-arrow.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: scale(1) !important;
+}
+
+
+/* Bentuk panah */
+.process-arrow span {
+    font-size: 4.5em;
+    font-weight: bold;
+
+    color: var(--navy);
+
+    line-height: 1;
+}
+
+
+/* =====================================================
+   KETERANGAN GAMBAR
+   ===================================================== */
+
+.process-label {
+    margin-top: 15px !important;
+
+    font-family: "Californian FB", serif !important;
+
+    font-size: 1em !important;
+    font-weight: bold;
+
+    color: var(--navy) !important;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   KOTAK DEFINISI
+   ===================================================== */
+
+.restoration-definition {
+    width: 82%;
+
+    margin: 10px auto 0;
+    padding: 22px 35px;
+
+    background: rgba(235, 244, 246, 0.9);
+
+    border-radius: 18px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+    text-align: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(25px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease !important;
+}
+
+
+/* Kotak muncul */
+.restoration-definition.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: translateY(0) !important;
+}
+
+
+/* Isi definisi */
+.restoration-definition p {
+    margin: 0 !important;
+
+    font-family: "Californian FB", serif !important;
+
+    font-size: 0.95em !important;
+
+    line-height: 1.5;
+
+    color: var(--navy) !important;
+}
+
+/* =====================================================
+   SLIDE 4 — REPRESENTASI CITRA
+   ===================================================== */
+
+.slide-representasi-citra {
+    overflow: hidden !important;
+}
+
+
+/* =====================================================
+   AREA UTAMA
+   ===================================================== */
+
+.representasi-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 94%;
+    margin: 20px auto 0;
+
+    min-height: 400px;
+}
+
+
+/* =====================================================
+   BEACH
+   ===================================================== */
+
+.representasi-beach {
+    width: 27%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateX(300px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.9s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.representasi-beach.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: translateX(0) !important;
+}
+
+
+/* Gambar Beach */
+.representasi-beach img {
+    width: 280px;
+    height: 373px;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 10px;
+
+    display: block;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+
+/* =====================================================
+   NAMA
+   ===================================================== */
+
+.representasi-label {
+    margin-top: 12px !important;
+
+    font-family: "Californian FB", serif !important;
+    font-size: 0.9em !important;
+    font-weight: bold;
+
+    color: var(--navy) !important;
+
+    text-align: center;
+
+    opacity: 0;
+
+    transition: opacity 0.6s ease 0.4s !important;
+}
+
+.representasi-beach.visible .representasi-label,
+.pixel-container.visible .representasi-label,
+.matrix-container.visible .representasi-label {
+    opacity: 1 !important;
+}
+
+
+/* =====================================================
+   ZOOM LINE
+   ===================================================== */
+
+.zoom-effect {
+    position: absolute;
+
+    left: 25%;
+    top: 205px;
+
+    width: 180px;
+    height: 120px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 0.5s ease !important;
+}
+
+.zoom-effect.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+
+/* Kotak merah pada Beach */
+.zoom-box {
+    position: absolute;
+
+    left: 225px;
+    top: 130px;
+
+    width: 35px;
+    height: 45px;
+
+    border: 4px solid #e53935;
+
+    box-sizing: border-box;
+}
+
+
+/* Garis zoom atas */
+.zoom-line-top {
+    position: absolute;
+
+    left: 258px;
+    top: 130px;
+
+    width: 170px;
+    height: 3px;
+
+    background: #e53935;
+
+    transform: rotate(-25deg);
+    transform-origin: left center;
+}
+
+
+/* Garis zoom bawah */
+.zoom-line-bottom {
+    position: absolute;
+
+    left: 258px;
+    top: 175px;
+
+    width: 170px;
+    height: 3px;
+
+    background: #e53935;
+
+    transform: rotate(25deg);
+    transform-origin: left center;
+}
+
+
+/* =====================================================
+   PIXEL
+   ===================================================== */
+
+.pixel-container {
+    width: 29%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: scale(0.65);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.pixel-container.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: scale(1) !important;
+}
+
+
+/* Gambar pixel */
+.pixel-container img {
+    width: 300px;
+    height: 300px;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 10px;
+
+    display: block;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+
+/* =====================================================
+   MATRIKS
+   ===================================================== */
+
+.matrix-container {
+    width: 27%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-80px);
+
+    transition:
+        opacity 0.7s ease,
+        transform 0.8s ease !important;
+}
+
+.matrix-container.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: translateY(0) !important;
+}
+
+
+/* =====================================================
+   MATRIKS GRID
+   ===================================================== */
+
+.matrix-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    width: 300px;
+    height: 225px;
+
+    border: 3px solid var(--navy);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: white;
+}
+
+
+/* Setiap angka */
+.matrix-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid #8aa7bc;
+    border-bottom: 1px solid #8aa7bc;
+
+    font-family: "Californian FB", serif;
+
+    font-size: 0.85em;
+
+    color: var(--navy);
+
+    opacity: 0;
+
+    transform: translateY(-15px);
+
+    animation: matrix-rain 0.45s ease forwards;
+}
+
+
+/* Efek gerimis kecil-kecil */
+@keyframes matrix-rain {
+
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    70% {
+        opacity: 0.6;
+        transform: translateY(4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =====================================================
+   DELAY SETIAP SEL MATRIKS
+   ===================================================== */
+
+.matrix-cell:nth-child(1)  { animation-delay: 0.05s; }
+.matrix-cell:nth-child(2)  { animation-delay: 0.12s; }
+.matrix-cell:nth-child(3)  { animation-delay: 0.18s; }
+.matrix-cell:nth-child(4)  { animation-delay: 0.25s; }
+
+.matrix-cell:nth-child(5)  { animation-delay: 0.32s; }
+.matrix-cell:nth-child(6)  { animation-delay: 0.39s; }
+.matrix-cell:nth-child(7)  { animation-delay: 0.46s; }
+.matrix-cell:nth-child(8)  { animation-delay: 0.53s; }
+
+.matrix-cell:nth-child(9)  { animation-delay: 0.60s; }
+.matrix-cell:nth-child(10) { animation-delay: 0.67s; }
+.matrix-cell:nth-child(11) { animation-delay: 0.74s; }
+.matrix-cell:nth-child(12) { animation-delay: 0.81s; }
+
+
+/* =====================================================
+   PANAH BEACH → PIXEL
+   ===================================================== */
+
+.process-arrow-small {
+    width: 8%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: scale(0.7);
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease !important;
+}
+
+.process-arrow-small.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: scale(1) !important;
+}
+
+
+.process-arrow-small span {
+    font-family: Arial, sans-serif;
+
+    font-size: 3.5em;
+
+    font-weight: 900;
+
+    color: var(--navy);
+
+    line-height: 1;
+}
+
+/* ==========================================
+   UKURAN FONT ISI PRESENTASI
+   ========================================== */
+
+/* Semua teks isi */
+.reveal p,
+.reveal li,
+.reveal td,
+.reveal th,
+.reveal .process-label,
+.reveal .representasi-label,
+.reveal .restoration-name,
+.reveal .restoration-definition {
+    font-size: 20pt !important;
+}
+
+/* RUMUS MATHJAX */
+.reveal section mjx-container {
+    font-size: 20pt !important;
+}
+
+/* Judul TIDAK ikut berubah */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+    /* tetap menggunakan ukuran judul yang sudah ada */
+}
+
+
+
+
+
+</style>
+
+
+<style id="rb-safe-transition-style">
+
+/* RB-SVD: presentation-only transition layer.
+   Deliberately does not target .reveal, .slides, or section dimensions. */
+#rb-page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+}
+
+#rb-page-transition .rb-transition-glow {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.16), transparent 32%),
+    linear-gradient(90deg, transparent 0%, rgba(255,255,255,.08) 48%, transparent 100%);
+  transform: translateX(-115%);
+}
+
+#rb-page-transition.rb-transition-run {
+  animation: rbTransitionOpacity 480ms ease-out both;
+}
+
+#rb-page-transition.rb-transition-run .rb-transition-glow {
+  animation: rbTransitionSweep 480ms cubic-bezier(.25,.7,.2,1) both;
+}
+
+@keyframes rbTransitionOpacity {
+  0% { opacity: 0; }
+  22% { opacity: .32; }
+  55% { opacity: .12; }
+  100% { opacity: 0; }
+}
+
+@keyframes rbTransitionSweep {
+  0% { transform: translateX(-115%); }
+  45% { transform: translateX(0%); }
+  100% { transform: translateX(115%); }
+}
+
+/* Subtle polish for fragments only; no layout-affecting properties. */
+.rb-fragment-polish {
+  animation: rbFragmentPolish 260ms ease-out both;
+}
+@keyframes rbFragmentPolish {
+  from { opacity: .72; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rb-page-transition,
+  #rb-page-transition .rb-transition-glow,
+  .rb-fragment-polish {
+    animation: none !important;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="reveal">
+    <div class="slides">
+
+<!-- SLIDE 1 -->
+<section
+    data-state="hide-slide-number"
+    data-background-image="image/cover.jpg"
+    data-background-size="cover"
+    data-background-position="center">
+</section>
+
+<!-- =====================================================
+     SLIDE 2 — CITRA YANG TIDAK SEMPURNA
+     ===================================================== -->
+
+<section class="slide-image-restoration">
+
+    <h2 class="judul-kiri">
+        Citra yang Tidak Sempurna
+    </h2>
+
+
+    <div class="restoration-images">
+
+
+        <!-- =========================
+             GAMBAR 1
+             ========================= -->
+
+        <div class="fragment restoration-item"
+             data-fragment-index="1">
+
+            <img src="image/beach_geometric_distortion.jpg"
+                 alt="Geometric Distortion">
+
+            <p class="restoration-name">
+                Geometric Distortion
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             GAMBAR 2
+             ========================= -->
+
+        <div class="fragment restoration-item"
+             data-fragment-index="2">
+
+            <img src="image/beach_salt_pepper.png"
+                 alt="Salt and Pepper">
+
+            <p class="restoration-name">
+                Citra ber-noise
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             GAMBAR 3
+             ========================= -->
+
+        <div class="fragment restoration-item"
+             data-fragment-index="3">
+
+            <img src="image/beach_motion_blur.jpg"
+                 alt="Motion Blur">
+
+            <p class="restoration-name">
+                Citra Blur
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SLIDE 3 — PROSES RESTORASI CITRA
+     ===================================================== -->
+
+<section class="slide-restoration-process">
+
+    <h2 class="judul-kiri">
+        3. Bagaimana Cara Kerjanya?
+    </h2>
+
+
+    <!-- =========================================
+         GAMBAR + PANAH
+         ========================================= -->
+
+    <div class="restoration-process">
+
+
+        <!-- =====================================
+             GAMBAR CITRA TERDEGRADASI
+             ===================================== -->
+
+        <div class="fragment process-image"
+             data-fragment-index="1">
+
+            <img src="image/beach_blur_gaussian_noise.png"
+                 alt="Citra Terdegradasi">
+
+            <p class="process-label">
+                Citra Terdegradasi
+            </p>
+
+        </div>
+
+
+        <!-- =====================================
+             PANAH
+             ===================================== -->
+
+        <div class="fragment process-arrow"
+             data-fragment-index="2">
+
+            <span>➜</span>
+
+        </div>
+
+
+        <!-- =====================================
+             GAMBAR CITRA RESTORASI
+             ===================================== -->
+
+        <div class="fragment process-image"
+             data-fragment-index="3">
+
+            <img src="image/beach.png"
+                 alt="Citra Restorasi">
+
+            <p class="process-label">
+                Citra Restorasi
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
+         DEFINISI RESTORASI CITRA
+         ========================================= -->
+
+    <div class="fragment restoration-definition"
+         data-fragment-index="4">
+
+        <p>
+            <strong>Restorasi citra</strong> adalah proses untuk
+            memperbaiki citra yang mengalami kerusakan atau degradasi
+            sehingga diperoleh citra yang lebih mendekati informasi aslinya.
+        </p>
+
+    </div>
+
+</section>
+
+        <!-- =====================================================
+     SLIDE 4 — REPRESENTASI CITRA
+     ===================================================== -->
+
+<section class="slide-representasi-citra">
+
+    <h2 class="judul-kiri">
+        4. Kalau Citranya Begini...
+    </h2>
+
+
+    <!-- =================================================
+         AREA BEACH → PIXEL → MATRIKS
+         ================================================= -->
+
+    <div class="representasi-area">
+
+
+        <!-- =============================================
+             1. BEACH
+             ============================================= -->
+
+        <div class="fragment representasi-beach"
+             data-fragment-index="1">
+
+            <img src="image/beach.png"
+                 alt="Beach">
+
+            <p class="representasi-label">
+                Beach
+            </p>
+
+        </div>
+
+
+        <!-- =============================================
+             2. GARIS ZOOM
+             ============================================= -->
+
+        <div class="fragment zoom-effect"
+             data-fragment-index="2">
+
+            <div class="zoom-box"></div>
+
+            <div class="zoom-line-top"></div>
+
+            <div class="zoom-line-bottom"></div>
+
+        </div>
+
+
+        <!-- =============================================
+             PANAH BEACH → PIXEL
+             ============================================= -->
+
+        <div class="fragment process-arrow-small"
+             data-fragment-index="2">
+
+            <span>➜</span>
+
+        </div>
+
+
+        <!-- =============================================
+             3. BEACH PIXEL
+             ============================================= -->
+
+        <div class="fragment pixel-container"
+             data-fragment-index="3">
+
+            <img src="image/beach_pixel.jpg"
+                 alt="Beach Pixel">
+
+            <p class="representasi-label">
+                Pixel
+            </p>
+
+        </div>
+
+
+        <!-- =============================================
+             PANAH PIXEL → MATRIKS
+             ============================================= -->
+
+        <div class="fragment process-arrow-small"
+             data-fragment-index="3">
+
+            <span>➜</span>
+
+        </div>
+
+
+        <!-- =============================================
+             4. MATRIKS
+             ============================================= -->
+
+        <div class="fragment matrix-container"
+             data-fragment-index="4">
+
+            <div class="matrix-grid">
+
+                <div class="matrix-cell">34</div>
+                <div class="matrix-cell">41</div>
+                <div class="matrix-cell">45</div>
+                <div class="matrix-cell">52</div>
+
+                <div class="matrix-cell">38</div>
+                <div class="matrix-cell">43</div>
+                <div class="matrix-cell">49</div>
+                <div class="matrix-cell">55</div>
+
+                <div class="matrix-cell">40</div>
+                <div class="matrix-cell">47</div>
+                <div class="matrix-cell">51</div>
+                <div class="matrix-cell">58</div>
+
+            </div>
+
+            <p class="representasi-label">
+                Matriks
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 5 — BIQUATERNION TEREDUKSI -->
+<!-- ===================================================== -->
+<section>
+    <!-- Judul Slide Rata Kiri -->
+    <h2 class="judul-kiri">Biquaternion Tereduksi</h2>
+
+    <!-- Kotakan Utama (Pakai class math-frame) -->
+    <div class="math-frame">
+        
+        <!-- Header Kotak (Tambahkan class "definisi" agar muncul tulisan Definisi 1.x) -->
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <!-- Isi Kotak -->
+        <div class="math-content">
+            <p>
+                Himpunan biquaternion tereduksi didefinisikan sebagai
+                \[
+                \mathbb{RB}
+                =
+                \left\{
+                q=a+bi+cj+dk
+                \mid
+                a,b,c,d\in\mathbb{R}
+                \right\}.
+                \]
+                dengan elemen satuan imajiner \(i,j,k\) memenuhi aturan perkalian berikut
+                \[
+                i^2=k^2=-1,
+                \qquad
+                j^2=1,
+                \qquad
+                ijk=-1.
+                \]
+                \[
+                ij=ji=k,\qquad
+                jk=kj=i,\qquad
+                ki=ik=-j.
+                \]
+            </p>
+
+        </div>
+        
+    </div>
+<p class="keterangan fragment">
+    Contoh: \( q = 6+3i+2j+5k \)
+</p>
+</section>
+
+<!-- ===================================================== -->
+<!-- SLIDE 6 — OPERASI PADA RB -->
+<!-- ===================================================== -->
+<section>
+    <!-- Judul Slide Rata Kiri -->
+    <h2 class="judul-kiri">Biquaternion Tereduksi</h2>
+
+    <!-- Kotakan Utama (Pakai class math-frame) -->
+    <div class="math-frame">
+        
+        <!-- Header Kotak (Tambahkan class "definisi" agar muncul tulisan Definisi 1.x) -->
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <!-- Isi Kotak -->
+        <div class="math-content">
+	<p>
+        Diberikan dua elemen pada himpunan biquaternion tereduksi:
+        \[
+        q_1=a_1+b_1i+c_1j+d_1k, \qquad q_2=a_2+b_2i+c_2j+d_2k.
+        \]
+    </p>
+
+    <!-- Bagian Penjumlahan (Muncul setelah diklik / Fragment 1) -->
+    <div class="fragment">
+        <p class="keterangan" style="margin-bottom: 0;"><strong>1. Penjumlahan:</strong></p>
+        <p>
+            \[
+            \begin{aligned}
+            q_1+q_2 =(a_1+a_2) +(b_1+b_2)i +(c_1+c_2)j +(d_1+d_2)k.
+            \end{aligned}
+            \]
+        </p>
+    </div>
+
+    <div class="fragment">
+        <p class="keterangan" style="margin-bottom: 0;"><strong>2. Perkalian:</strong></p>
+        <p>
+            \[
+            \begin{aligned}
+            q_1q_2
+            ={}& a_1a_2-b_1b_2+c_1c_2-d_1d_2+i(b_1a_2+a_1b_2+d_1c_2+c_1d_2)\\
+            &+j(a_1c_2+c_1a_2-b_1d_2-d_1b_2)+k(d_1a_2+a_1d_2+b_1c_2+c_1b_2).
+            \end{aligned}
+            \]
+        </p>
+    </div>
+</div>
+</div>
+
+<p class="keterangan fragment">
+Operasi perkalian pada \(\mathbb{RB}\) bersifat komutatif, yaitu untuk setiap \(q_1,q_2 \in \mathbb{RB}\) berlaku \(q_1q_2 = q_2q_1.\)
+</p>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 7 -->
+<!-- ===================================================== -->
+<section>
+    <h2 class="judul-kiri">Biquaternion Tereduksi</h2>
+
+    <div class="wadah-dinamis">
+
+        <!-- KOLOM KIRI (Kendaraan animasi menyempit) -->
+        <div class="fragment kolom-menyempit" data-fragment-index="1" style="box-sizing: border-box;">
+            
+            <!-- KOTAK PROPOSISI 1 -->
+            <div class="math-frame" style="width: 100%; margin: 0; height: 310px;">
+                
+                <!-- Kamu bisa ganti "sifat" menjadi "definisi" atau "teorema" sesuai kebutuhan -->
+                <div class="math-header proposisi">
+                    <h3></h3>
+                </div>
+                
+                <div class="math-content">
+                    <p>
+                        Setiap \(q=a+bi+cj+dk\in\mathbb{RB}\) dapat dinyatakan sebagai
+                    </p>
+                    <p>
+                        \[ q=z_1+z_2j, \]
+                    </p>
+                    <p>
+                        dengan \(z_1=a+bi\), \(\quad z_2=c+di\), dan \(z_1,z_2\in\mathbb{C}\).
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- KOLOM KANAN (Kendaraan animasi terbang dari kanan) -->
+        <!-- Perhatikan: Desain warna & bayangan dihilangkan di sini karena sudah diurus oleh math-frame -->
+        <div class="fragment panel-terbang" data-fragment-index="1" style="box-sizing: border-box;">
+            
+            <!-- KOTAK PROPOSISI 2 -->
+            <div class="math-frame" style="width: 100%; margin: 0; height: 310px;">
+                
+                <div class="math-header proposisi">
+                    <h3></h3>
+                </div>
+                
+                <div class="math-content">
+                    <p>
+                        Setiap \(q=a+bi+cj+dk\in\mathbb{RB}\) dapat dinyatakan sebagai
+                    </p>
+                    <p>
+                        \[ q=e_1w_1+e_2w_2, \]
+                    </p>
+                    <p>
+                        dengan \(w_1=(a+c)+i(b+d)\), \(w_2=(a-c)+i(b-d)\), dan \(w_1,w_2\in\mathbb{C}\).
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<div class="fragment" data-fragment-index="2">
+        <p class="keterangan" style="margin-top: 5px;">
+            <strong>Contoh:</strong> 
+            \( q = 1 + 2i + 3j + 4k = (1+2i) + (3+4i)j = e_1(4+6i) + e_2(-2-2i) \).
+        </p>
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 8 — REPRESENTASI MATRIKS KOMPLEKS BILANGAN -->
+<!-- ===================================================== -->
+
+<section>
+    <h2 class="judul-kiri">Biquaternon Tereduksi</h2>
+
+    <!-- BLOK DEFINISI -->
+    <div class="math-frame">
+
+        <!-- Header Definisi -->
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <!-- Isi Definisi -->
+        <div class="math-content">
+            <p>
+                Diberikan biquaternion tereduksi
+                \(q = z_1 + z_2j \in \mathbb{RB},\)
+                dengan
+                \(z_1 = a + bi,\ z_2 = c + di \in \mathbb{C}\).
+                <strong>Representasi matriks kompleks</strong> dari \(q\)
+                didefinisikan sebagai
+            </p>
+
+            <p>
+                \[
+                N(q)=
+                \begin{bmatrix}
+                z_1 & z_2 \\
+                z_2 & z_1
+                \end{bmatrix}
+                \in M_{2\times2}(\mathbb{C}).
+                \]
+            </p>
+        </div>
+
+    </div>
+
+
+    <p class="keterangan fragment">
+        Contoh: \(q = (1+2i) + (3-i)j \in \mathbb{RB}.\)
+    </p>
+
+    <!-- HASIL REPRESENTASI: MUNCUL PADA KLIK KEDUA -->
+    <div class="fragment">
+        \[
+        N(q)=
+        \begin{bmatrix}
+        z_1 & z_2 \\
+        z_2 & z_1
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+        1+2i & 3-i \\
+        3-i & 1+2i
+        \end{bmatrix}.
+        \]
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- SLIDE 9 — MATRIKS BIQUATERNION TEREDUKSI -->
+<!-- ===================================================== -->
+
+<section>
+    <h2 class="judul-kiri">Matriks Biquaternion Tereduksi</h2>
+
+    <!-- BLOK DEFINISI -->
+    <div class="math-frame">
+
+        <!-- Header Definisi -->
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <!-- Isi Definisi -->
+        <div class="math-content">
+            <p>
+                Suatu matriks biquaternion tereduksi
+                \(A \in M_{m\times n}(\mathbb{RB})\)
+                didefinisikan sebagai
+            </p>
+
+            <p>
+                \[
+                A=A_0+A_1i+A_2j+A_3k,
+                \]
+            </p>
+
+            <p>
+                dengan
+                \(A_0,A_1,A_2,A_3
+                \in M_{m\times n}(\mathbb{R})\).
+            </p>
+        </div>
+
+    </div>
+
+    <!-- CONTOH: MUNCUL PADA KLIK -->
+    <div class="fragment">
+
+        <p class="keterangan" style="margin-bottom: 5px;">
+            Contoh:
+        </p>
+
+        <p>
+            \[
+            A=
+            \begin{bmatrix}
+            1 & 2\\
+            0 & -1
+            \end{bmatrix}
+            +
+            \begin{bmatrix}
+            3 & 0\\
+            1 & 2
+            \end{bmatrix}i
+            +
+            \begin{bmatrix}
+            -1 & 4\\
+            2 & 1
+            \end{bmatrix}j
+            +
+            \begin{bmatrix}
+            0 & 1\\
+            -2 & 3
+            \end{bmatrix}k.
+            \]
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 10 — Operasi pada Matriks Biquaternion Tereduksi
+     ========================= -->
+<section>
+
+    <h2 class="judul-kiri">Matriks Biquaternion Tereduksi</h2>
+
+
+    <!-- =========================
+         BLOK DEFINISI
+         ========================= -->
+    <div class="math-frame">
+
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <div class="math-content">
+
+            <!-- Langsung muncul saat slide dibuka -->
+            <p>
+                Diberikan
+                \(A=A_0+A_1i+A_2j+A_3k
+                \in M_{m\times n}(\mathbb{RB})\).
+            </p>
+
+
+            <!-- Klik 1 -->
+            <div class="fragment">
+                <p>
+                    Konjugat dari \(A\):
+                    \(\overline{A}=A_0-A_1i-A_2j-A_3k.\)
+                </p>
+            </div>
+
+
+            <!-- Klik 2 -->
+            <div class="fragment">
+                <p>
+                    Transpos dari \(A\):
+                    \(A^T=A_0^T+A_1^Ti+A_2^Tj+A_3^Tk.\)
+                </p>
+            </div>
+
+
+            <!-- Klik 3 -->
+            <div class="fragment">
+                <p>
+                    Konjugat transpos dari \(A\):
+                    \(A^*=A_0^T-A_1^Ti-A_2^Tj-A_3^Tk.\)
+                </p>
+            </div>
+
+
+            <!-- Klik 4 -->
+            <div class="fragment">
+                <p>
+                    <strong>\(ik\)-konjugat transpos</strong> dari \(A\):
+                    \(A^H=A_0^T-A_1^Ti+A_2^Tj-A_3^Tk.\)
+                </p>
+            </div>
+
+
+            <!-- Klik 5 -->
+            <div class="fragment">
+                <p>
+                    dengan
+                    \(A_0,A_1,A_2,A_3\in M_{m\times n}(\mathbb{R})\).
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =========================
+     CONTOH
+     ========================= -->
+
+<!-- Klik: muncul tulisan Contoh -->
+<div class="fragment">
+    <p class="keterangan" style="margin-bottom: 5px;">
+        <strong>Contoh:</strong>
+    </p>
+</div>
+
+
+
+<!-- =========================
+     CONTOH — SATU BARIS BERGANTI
+     ========================= -->
+
+<div class="contoh-operasi">
+
+    <!-- Klik: A muncul -->
+    <div class="fragment fade-in-then-out contoh-state">
+        \[
+        A=
+        \begin{bmatrix}
+        1&0\\
+        2&-1
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+        2&1\\
+        0&3
+        \end{bmatrix}i
+        +
+        \begin{bmatrix}
+        -1&4\\
+        2&0
+        \end{bmatrix}j
+        +
+        \begin{bmatrix}
+        3&-2\\
+        1&1
+        \end{bmatrix}k
+        \]
+    </div>
+
+
+    <!-- Klik: A hilang → konjugat muncul -->
+    <div class="fragment fade-in-then-out contoh-state">
+        \[
+        \overline{A}=
+        \begin{bmatrix}
+        1&0\\
+        2&-1
+        \end{bmatrix}
+        -
+        \begin{bmatrix}
+        2&1\\
+        0&3
+        \end{bmatrix}i
+        -
+        \begin{bmatrix}
+        -1&4\\
+        2&0
+        \end{bmatrix}j
+        -
+        \begin{bmatrix}
+        3&-2\\
+        1&1
+        \end{bmatrix}k
+        \]
+    </div>
+
+
+    <!-- Klik: konjugat hilang → transpos muncul -->
+    <div class="fragment fade-in-then-out contoh-state">
+        \[
+        A^T=
+        \begin{bmatrix}
+        1&2\\
+        0&-1
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+        2&0\\
+        1&3
+        \end{bmatrix}i
+        +
+        \begin{bmatrix}
+        -1&2\\
+        4&0
+        \end{bmatrix}j
+        +
+        \begin{bmatrix}
+        3&1\\
+        -2&1
+        \end{bmatrix}k
+        \]
+    </div>
+
+
+    <!-- Klik: transpos hilang → konjugat transpos muncul -->
+    <div class="fragment fade-in-then-out contoh-state">
+        \[
+        A^*=
+        \begin{bmatrix}
+        1&2\\
+        0&-1
+        \end{bmatrix}
+        -
+        \begin{bmatrix}
+        2&0\\
+        1&3
+        \end{bmatrix}i
+        -
+        \begin{bmatrix}
+        -1&2\\
+        4&0
+        \end{bmatrix}j
+        -
+        \begin{bmatrix}
+        3&1\\
+        -2&1
+        \end{bmatrix}k
+        \]
+    </div>
+
+
+    <!-- Klik: konjugat transpos hilang → ik-konjugat transpos muncul -->
+    <div class="fragment fade-in contoh-state">
+        \[
+        A^H=
+        \begin{bmatrix}
+        1&2\\
+        0&-1
+        \end{bmatrix}
+        -
+        \begin{bmatrix}
+        2&0\\
+        1&3
+        \end{bmatrix}i
+        +
+        \begin{bmatrix}
+        -1&2\\
+        4&0
+        \end{bmatrix}j
+        -
+        \begin{bmatrix}
+        3&1\\
+        -2&1
+        \end{bmatrix}k
+        \]
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 11 — Representasi Kompleks Matriks Biquaternion Tereduksi
+     ========================= -->
+<section>
+
+    <h2 class="judul-kiri">Representasi Kompleks Matriks Biquaternion Tereduksi</h2>
+
+
+    <!-- =========================
+         BLOK DEFINISI
+         ========================= -->
+    <div class="math-frame">
+
+        <div class="math-header definisi">
+            <h3></h3>
+        </div>
+
+        <div class="math-content">
+
+            <p>
+                Diberikan
+                \(A=B_1+B_2j\in M_{m\times n}(\mathbb{RB})\)
+                dengan
+                \(B_1,B_2\in M_{m\times n}(\mathbb{C})\).
+                <strong>Representasi kompleks</strong> dari matriks
+                biquaternion tereduksi \(A\)
+                didefinisikan sebagai matriks blok
+                \(\sigma(A)\in M_{2m\times 2n}(\mathbb{C})\)
+                yang diberikan oleh
+            </p>
+
+            <p>
+                \[
+                \sigma(A)=
+                \begin{bmatrix}
+                B_1 & B_2\\
+                B_2 & B_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- =========================
+         CONTOH
+         ========================= -->
+
+    <!-- Klik: Contoh -->
+    <div class="fragment">
+        <p class="keterangan" style="margin-bottom: 5px;">
+            <strong>Contoh:</strong>
+        </p>
+    </div>
+
+
+    <!-- Klik: A, B1, B2 -->
+    <div class="fragment">
+        <p>
+            \(A=B_1+B_2j\) dengan
+        </p>
+
+        <p>
+            \[
+            B_1=
+            \begin{bmatrix}
+            1&i\\
+            0&2
+            \end{bmatrix},
+            \qquad
+            B_2=
+            \begin{bmatrix}
+            i&1\\
+            -1&0
+            \end{bmatrix}.
+            \]
+        </p>
+    </div>
+
+
+    <!-- Klik: sigma(A) -->
+    <div class="fragment">
+        <p>
+            \[
+            \sigma(A)=
+            \begin{bmatrix}
+            1&i&i&1\\
+            0&2&-1&0\\
+            i&1&1&i\\
+            -1&0&0&2
+            \end{bmatrix}.
+            \]
+        </p>
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SLIDE 12 — SIFAT-SIFAT REPRESENTASI KOMPLEKS
+     ===================================================== -->
+
+<section class="slide-teorema-sigma">
+
+    <h2 class="judul-kiri">
+        Sifat-Sifat Representasi Kompleks
+    </h2>
+
+
+    <!-- =================================================
+         KOTAK TEOREMA
+         ================================================= -->
+
+    <div class="math-frame teorema-frame">
+
+        <div class="math-header teorema">
+            <h3>Penjumlahan dan Perkalian \(\sigma(A)\)</h3>
+        </div>
+
+        <div class="math-content">
+
+            <ol class="teorema-list">
+
+                <!-- SIFAT 1 -->
+                <li>
+                    \(A=B \iff \sigma(A)=\sigma(B)\)
+                </li>
+
+                <!-- SIFAT 2 -->
+                <li class="fragment"
+                    data-fragment-index="10">
+                    \(\sigma(A+B)=\sigma(A)+\sigma(B)\)
+                </li>
+
+                <!-- SIFAT 3 -->
+                <li class="fragment"
+                    data-fragment-index="17">
+                    \(\sigma(tA)=t\sigma(A)\)
+                </li>
+
+                <!-- SIFAT 4 -->
+                <li class="fragment"
+                    data-fragment-index="22">
+                    \(\sigma(AC)=\sigma(A)\sigma(C)\)
+                </li>
+
+            </ol>
+
+        </div>
+    </div>
+
+
+    <!-- =================================================
+         AREA BUKTI
+         ================================================= -->
+
+    <div class="bukti-area">
+
+
+        <!-- =================================================
+             BUKTI SIFAT 1
+             ================================================= -->
+
+        <div class="bukti-state active" data-proof="1">
+
+            <p class="fragment" data-fragment-index="1">
+                Diberikan \(A,B\in M_{m\times n}(\mathbb{RB})\).
+                Misalkan
+            </p>
+
+            <p class="fragment" data-fragment-index="2">
+                \[
+                A=P_1+P_2j,\qquad
+                B=Q_1+Q_2j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="3">
+                dengan
+                \(P_1,P_2,Q_1,Q_2\in M_{m\times n}(\mathbb{C})\).
+            </p>
+
+            <p class="fragment" data-fragment-index="4">
+                \((\Rightarrow)\) Jika \(A=B\), maka
+            </p>
+
+            <p class="fragment" data-fragment-index="5">
+                \[
+                P_1+P_2j=Q_1+Q_2j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="6">
+                Akibatnya,
+                \[
+                P_1=Q_1,\qquad P_2=Q_2.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="7">
+                Oleh karena itu,
+                \[
+                \sigma(A)=
+                \begin{bmatrix}
+                P_1&P_2\\
+                P_2&P_1
+                \end{bmatrix}
+                =
+                \begin{bmatrix}
+                Q_1&Q_2\\
+                Q_2&Q_1
+                \end{bmatrix}
+                =\sigma(B).
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="8">
+                \((\Leftarrow)\) Jika
+                \(\sigma(A)=\sigma(B)\), maka
+            </p>
+
+            <p class="fragment" data-fragment-index="9">
+                \[
+                \begin{bmatrix}
+                P_1&P_2\\
+                P_2&P_1
+                \end{bmatrix}
+                =
+                \begin{bmatrix}
+                Q_1&Q_2\\
+                Q_2&Q_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="9">
+                Dari kesamaan matriks blok diperoleh
+                \[
+                P_1=Q_1,\qquad P_2=Q_2.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="9">
+                Dengan demikian,
+                \[
+                A=P_1+P_2j=Q_1+Q_2j=B.
+                \]
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BUKTI SIFAT 2
+             ================================================= -->
+
+        <div class="bukti-state" data-proof="2">
+
+            <p class="fragment" data-fragment-index="11">
+                Diberikan \(A,B\in M_{m\times n}(\mathbb{RB})\).
+                Misalkan
+            </p>
+
+            <p class="fragment" data-fragment-index="12">
+                \[
+                A=P_1+P_2j,\qquad
+                B=Q_1+Q_2j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="13">
+                dengan
+                \(P_1,P_2,Q_1,Q_2\in M_{m\times n}(\mathbb{C})\).
+            </p>
+
+            <p class="fragment" data-fragment-index="14">
+                Diperhatikan
+                \[
+                A+B=(P_1+Q_1)+(P_2+Q_2)j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="15">
+                Berdasarkan Definisi~\ref{def:representasi kompleks matriks biquaternion tereduksi},
+                diperoleh
+                \[
+                \sigma(A+B)=
+                \begin{bmatrix}
+                P_1+Q_1&P_2+Q_2\\
+                P_2+Q_2&P_1+Q_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="16">
+                \[
+                =
+                \begin{bmatrix}
+                P_1&P_2\\
+                P_2&P_1
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                Q_1&Q_2\\
+                Q_2&Q_1
+                \end{bmatrix}
+                =
+                \sigma(A)+\sigma(B).
+                \]
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BUKTI SIFAT 3
+             ================================================= -->
+
+        <div class="bukti-state" data-proof="3">
+
+            <p class="fragment" data-fragment-index="18">
+                Diberikan \(t\in\mathbb{R}\) dan
+                \(A=P_1+P_2j\in M_{m\times n}(\mathbb{RB})\).
+            </p>
+
+            <p class="fragment" data-fragment-index="19">
+                Diperhatikan
+                \[
+                tA=(tP_1)+(tP_2)j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="20">
+                Berdasarkan Definisi~\ref{def:representasi kompleks matriks biquaternion tereduksi},
+                diperoleh
+                \[
+                \sigma(tA)=
+                \begin{bmatrix}
+                tP_1&tP_2\\
+                tP_2&tP_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="21">
+                \[
+                =
+                t
+                \begin{bmatrix}
+                P_1&P_2\\
+                P_2&P_1
+                \end{bmatrix}
+                =
+                t\sigma(A).
+                \]
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             BUKTI SIFAT 4
+             ================================================= -->
+
+        <div class="bukti-state" data-proof="4">
+
+            <p class="fragment" data-fragment-index="23">
+                Diberikan
+                \(A\in M_{m\times n}(\mathbb{RB})\) dan
+                \(C\in M_{n\times p}(\mathbb{RB})\).
+                Misalkan
+            </p>
+
+            <p class="fragment" data-fragment-index="24">
+                \[
+                A=P_1+P_2j,\qquad
+                C=R_1+R_2j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="25">
+                dengan
+                \(P_1,P_2\in M_{m\times n}(\mathbb{C})\) dan
+                \(R_1,R_2\in M_{n\times p}(\mathbb{C})\).
+            </p>
+
+            <p class="fragment" data-fragment-index="26">
+                Menggunakan aturan perkalian satuan imajiner
+                \(i,j,k\) pada \(\mathbb{RB}\) diperoleh
+                \[
+                AC=(P_1R_1+P_2R_2)
+                +(P_1R_2+P_2R_1)j.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="27">
+                Berdasarkan Definisi~\ref{def:representasi kompleks matriks biquaternion tereduksi},
+                diperoleh
+                \[
+                \sigma(AC)=
+                \begin{bmatrix}
+                P_1R_1+P_2R_2&P_1R_2+P_2R_1\\
+                P_1R_2+P_2R_1&P_1R_1+P_2R_2
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="28">
+                Di sisi lain,
+                \[
+                \sigma(A)=
+                \begin{bmatrix}
+                P_1&P_2\\
+                P_2&P_1
+                \end{bmatrix},
+                \qquad
+                \sigma(C)=
+                \begin{bmatrix}
+                R_1&R_2\\
+                R_2&R_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="29">
+                Sehingga diperoleh
+                \[
+                \sigma(A)\sigma(C)=
+                \begin{bmatrix}
+                P_1R_1+P_2R_2&P_1R_2+P_2R_1\\
+                P_2R_1+P_1R_2&P_2R_2+P_1R_1
+                \end{bmatrix}.
+                \]
+            </p>
+
+            <p class="fragment" data-fragment-index="30">
+                Karena
+                \(P_2R_1+P_1R_2=P_1R_2+P_2R_1\),
+                diperoleh
+                \[
+                \sigma(A)\sigma(C)=
+                \begin{bmatrix}
+                P_1R_1+P_2R_2&P_1R_2+P_2R_1\\
+                P_1R_2+P_2R_1&P_1R_1+P_2R_2
+                \end{bmatrix}
+                =\sigma(AC).
+                \]
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     SLIDE 13 — TEOREMA
+     ========================= -->
+<section>
+
+    <h2 class="judul-kiri">
+        Sifat Representasi Kompleks
+    </h2>
+
+    <div class="math-frame teorema-frame">
+
+        <div class="math-header teorema">
+            <h3>
+                Relasi Konjugat Transpos
+            </h3>
+        </div>
+
+        <div class="math-content">
+
+            <p>
+                Untuk setiap
+                \(A \in M_{m \times n}(\mathbb{RB})\), berlaku
+            </p>
+
+            \[
+            \sigma(A^H) = \bigl(\sigma(A)\bigr)^*.
+            \]
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 14 — REPRESENTASI KOMPLEKS BLOK KOLOM PERTAMA
+     ========================= -->
+<section>
+
+    <h2 class="judul-kiri">
+        Representasi Kompleks Matriks Biquaternion Tereduksi
+    </h2>
+
+    <!-- Persamaan sigma_c(A) -->
+    <div class="persamaan-utama">
+
+        \[
+        \sigma_c(A)=
+        \begin{bmatrix}
+        B_1\\
+        B_2
+        \end{bmatrix}.
+        \]
+
+    </div>
+
+
+    <!-- Blok Teorema -->
+    <div class="math-frame teorema-frame">
+
+        <div class="math-header teorema">
+            <h3>
+                Penjumlahan dan Perkalian \(\sigma_c(A)\)
+            </h3>
+        </div>
+
+        <div class="math-content">
+
+            <p>
+                Diberikan
+                \(A,B\in M_{m\times n}(\mathbb{RB})\),
+                \(C\in M_{n\times p}(\mathbb{RB})\),
+                dan \(t\in\mathbb{R}\), berlaku:
+            </p>
+
+            <ol class="teorema-list">
+
+                <li>
+                    \(A=B
+                    \iff
+                    \sigma_c(A)=\sigma_c(B)\).
+                </li>
+
+                <li>
+                    \(\sigma_c(A+B)
+                    =
+                    \sigma_c(A)+\sigma_c(B)\).
+                </li>
+
+                <li>
+                    \(\sigma_c(tA)
+                    =
+                    t\sigma_c(A)\).
+                </li>
+
+                <li>
+                    \(\sigma_c(AC)
+                    =
+                    \sigma(A)\sigma_c(C)\).
+                </li>
+
+            </ol>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 15 — NORMA FROBENIUS
+     ========================= -->
+<section class="slide-norma-frobenius">
+
+    <h2 class="judul-kiri">
+        Norma Frobenius
+    </h2>
+
+
+    <!-- =========================================
+         DEFINISI 1
+         ========================================= -->
+    <div class="math-frame teorema-frame">
+
+        <div class="math-header definisi">
+            <h3>
+                Norma Frobenius Matriks Kompleks
+            </h3>
+        </div>
+
+        <div class="math-content">
+
+            <p>
+                Diberikan matriks \(A=[a_{ij}]\) berukuran
+                \(m\times n\). <strong>Norma Frobenius</strong>
+                dari \(A\), dinotasikan dengan \(\|A\|_F\),
+                didefinisikan sebagai
+            </p>
+
+            \[
+            \|A\|_F
+            =
+            \left(
+            \sum_{i=1}^{m}
+            \sum_{j=1}^{n}
+            |a_{ij}|^2
+            \right)^{\frac12}.
+            \]
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         AREA CONTOH / DEFINISI 2
+         ========================================= -->
+    <div class="norma-state-area">
+
+        <!-- CONTOH -->
+        <div class="norma-state active"
+             data-state="1">
+
+            <div class="keterangan-norma">
+                <strong>Contoh:</strong>
+            </div>
+
+            <div class="contoh-norma">
+
+                \[
+                A=
+                \begin{bmatrix}
+                1+i & 0 & 2\\
+                1 & -i & 0
+                \end{bmatrix}.
+                \]
+
+                <p>
+                    Norma Frobenius dari \(A\) adalah
+                </p>
+
+                \[
+                \begin{aligned}
+                \|A\|_F
+                &=
+                \sqrt{
+                |1+i|^2+|0|^2+|2|^2
+                +|1|^2+|-i|^2+|0|^2
+                }\\
+                &=
+                \sqrt{
+                2+0+4+1+1+0
+                }\\
+                &=\sqrt{8}
+                =2\sqrt{2}.
+                \end{aligned}
+                \]
+
+            </div>
+
+        </div>
+
+
+        <!-- DEFINISI 2 -->
+        <div class="norma-state"
+             data-state="2">
+
+            <div class="math-frame">
+
+                <div class="math-header definisi">
+                    <h3>
+                        Norma Frobenius Matriks Biquaternion Tereduksi
+                    </h3>
+                </div>
+
+                <div class="math-content">
+
+                    <p>
+                        Diberikan matriks biquaternion tereduksi
+                        \(A=A_0+A_1i+A_2j+A_3k=[a_{ij}]
+                        \in M_{m\times n}(\mathbb{RB})\).
+                        Norma Frobenius dari \(A\) didefinisikan sebagai
+                    </p>
+
+                    \[
+                    \|A\|_F
+                    =
+                    \sqrt{
+                    \|A_0\|_F^2+
+                    \|A_1\|_F^2+
+                    \|A_2\|_F^2+
+                    \|A_3\|_F^2
+                    }
+                    =
+                    \sqrt{
+                    \sum_{i,j}\|a_{ij}\|^2
+                    }.
+                    \]
+
+                    <p>
+                        dengan \(\|A_k\|_F\) menyatakan norma Frobenius
+                        dari matriks \(A_k\), untuk \(k=0,1,2,3\).
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DEFINISI 2 + PROPOSISI -->
+        <div class="norma-state"
+             data-state="3">
+
+            <div class="math-frame">
+
+                <div class="math-header definisi">
+                    <h3>
+                        Norma Frobenius Matriks Biquaternion Tereduksi
+                    </h3>
+                </div>
+
+                <div class="math-content">
+
+                    <p>
+                        Diberikan matriks biquaternion tereduksi
+                        \(A=A_0+A_1i+A_2j+A_3k=[a_{ij}]
+                        \in M_{m\times n}(\mathbb{RB})\).
+                        Norma Frobenius dari \(A\) didefinisikan sebagai
+                    </p>
+
+                    \[
+                    \|A\|_F
+                    =
+                    \sqrt{
+                    \|A_0\|_F^2+
+                    \|A_1\|_F^2+
+                    \|A_2\|_F^2+
+                    \|A_3\|_F^2
+                    }
+                    =
+                    \sqrt{
+                    \sum_{i,j}\|a_{ij}\|^2
+                    }.
+                    \]
+
+                    <p>
+                        dengan \(\|A_k\|_F\) menyatakan norma Frobenius
+                        dari matriks \(A_k\), untuk \(k=0,1,2,3\).
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="math-frame proposisi-frame">
+
+                <div class="math-header proposisi">
+                    <h3>
+                        Hubungan Norma Frobenius
+                    </h3>
+                </div>
+
+                <div class="math-content">
+
+                    <p>
+                        Jika
+                        \(A=B_1+B_2j
+                        \in M_{m\times n}(\mathbb{RB})\),
+                        maka
+                    </p>
+
+                    \[
+                    \|A\|_F
+                    =
+                    \|\sigma_c(A)\|_F.
+                    \]
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         FRAGMENT PEMINDAH STATE
+         ========================================= -->
+    <span class="fragment norma-switch"
+          data-fragment-index="1"
+          data-next-state="2">
+    </span>
+
+    <span class="fragment norma-switch"
+          data-fragment-index="2"
+          data-next-state="3">
+    </span>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 16 — SIFAT SIGMA -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Sifat Representasi \(\sigma(A)\)</h2>
+
+    <p>
+        Untuk
+        \(A,B\in M_{m\times n}(\mathbb{RB})\),
+        \(C\in M_{n\times p}(\mathbb{RB})\),
+        dan \(t\in\mathbb{R}\), berlaku
+    </p>
+
+    <div class="fragment">
+        \[
+        A=B
+        \iff
+        \sigma(A)=\sigma(B).
+        \]
+    </div>
+
+    <div class="fragment">
+        \[
+        \sigma(A+B)=\sigma(A)+\sigma(B).
+        \]
+    </div>
+
+    <div class="fragment">
+        \[
+        \sigma(tA)=t\sigma(A).
+        \]
+    </div>
+
+    <div class="fragment">
+        \[
+        \sigma(AC)=\sigma(A)\sigma(C).
+        \]
+    </div>
+</section>
+
+
+<!-- =========================
+     SLIDE 17 — SIFAT ORTHOGONAL P_t
+     ========================= -->
+<section class="slide-pt-orthogonal">
+
+    <h2 class="judul-kiri">Matriks Orthogonal \(P_t\)</h2>
+
+    <div class="math-frame">
+        <div class="math-header sifat">
+            <h3>Sifat Orthogonal Matriks \(P_t\)</h3>
+        </div>
+
+        <div class="math-content">
+
+            <p>
+                Diperhatikan bahwa matriks
+            </p>
+
+            \[
+            P_t=
+            \frac{1}{\sqrt{2}}
+            \begin{bmatrix}
+            I_t&I_t\\
+            -I_t&I_t
+            \end{bmatrix}
+            \]
+            
+            <p>
+                bersifat orthogonal.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- PEMBUKTIAN MUNCUL SAAT KLIK -->
+    <div class="bukti-pt fragment" data-fragment-index="1">
+
+        <div class="keterangan-pt">
+            <strong>Pembuktian:</strong>
+        </div>
+
+        \[
+        \begin{aligned}
+        P_t^T P_t
+        &=
+        \frac{1}{2}
+        \begin{bmatrix}
+        I_t&-I_t\\
+        I_t&I_t
+        \end{bmatrix}
+        \begin{bmatrix}
+        I_t&I_t\\
+        -I_t&I_t
+        \end{bmatrix}\\[4pt]
+        &=
+        \frac{1}{2}
+        \begin{bmatrix}
+        2I_t&0\\
+        0&2I_t
+        \end{bmatrix}\\[4pt]
+        &=
+        \begin{bmatrix}
+        I_t&0\\
+        0&I_t
+        \end{bmatrix}\\[4pt]
+        &=I_{2t}.
+        \end{aligned}
+        \]
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 17 — BLOK DIAGONAL
+     ========================= -->
+<section class="slide-blok-diagonal">
+
+    <h2 class="judul-kiri">Blok Diagonal Matriks Biquaternion Tereduksi</h2>
+
+    <div class="math-frame teorema-frame">
+
+        <div class="math-header teorema">
+            <h3>Blok Diagonal Matriks Biquaternion Tereduksi</h3>
+        </div>
+
+        <div class="math-content">
+
+            <!-- FRAGMENT 1 -->
+            <div class="fragment" data-fragment-index="1">
+                <p>
+                    Diberikan
+                    \(A=B_1+B_2j=B_1^c e_1+B_2^c e_2
+                    \in M_{m\times n}(\mathbb{RB})\),
+                    dengan
+                    \(B_1,B_2,B_1^c,B_2^c\in M_{m\times n}(\mathbb{C})\)
+                    yang memenuhi
+                </p>
+
+                \[
+                B_1^c=B_1-B_2,
+                \qquad
+                B_2^c=B_1+B_2.
+                \]
+            </div>
+
+            <!-- FRAGMENT 2 -->
+            <div class="fragment" data-fragment-index="2">
+
+                <p>
+                    Didefinisikan matriks orthogonal
+                    \(P_m\in M_{2m\times2m}(\mathbb{R})\)
+                    dan
+                    \(P_n\in M_{2n\times2n}(\mathbb{R})\),
+                    sebagai
+                </p>
+
+                \[
+                P_m=
+                \frac{1}{\sqrt{2}}
+                \begin{bmatrix}
+                I_m&I_m\\
+                -I_m&I_m
+                \end{bmatrix},
+                \qquad
+                P_n=
+                \frac{1}{\sqrt{2}}
+                \begin{bmatrix}
+                I_n&I_n\\
+                -I_n&I_n
+                \end{bmatrix}.
+                \]
+
+            </div>
+
+            <!-- FRAGMENT 3 -->
+            <div class="fragment" data-fragment-index="3">
+
+                <p>
+                    sehingga untuk setiap representasi kompleks
+                    \(\sigma(A)\in M_{2m\times2n}(\mathbb{C})\), berlaku
+                </p>
+
+                \[
+                P_m^T\sigma(A)P_n
+                =
+                \begin{bmatrix}
+                B_1^c&O\\
+                O&B_2^c
+                \end{bmatrix}
+                \in M_{2m\times2n}(\mathbb{C}).
+                \]
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+</section>
+
+<!-- =========================
+     SLIDE 19 — BUKTI BLOK DIAGONAL
+     ========================= -->
+<section class="slide-bukti-blok">
+
+    <h2 class="judul-kiri">Bukti Teorema Blok Diagonal</h2>
+
+    <div class="bukti-container">
+
+        <!-- LANGKAH 1 -->
+        <div class="proof-state active" data-proof="1">
+            <p>
+                Diambil sebarang matriks biquaternion tereduksi
+                \(A=B_1+B_2j\in M_{m\times n}(\mathbb{RB})\),
+                dengan
+                \(B_1,B_2\in M_{m\times n}(\mathbb{C})\).
+            </p>
+
+            <p>
+                Representasi kompleks dari \(A\) diberikan oleh
+            </p>
+
+            \[
+            \sigma(A)=
+            \begin{bmatrix}
+            B_1&B_2\\
+            B_2&B_1
+            \end{bmatrix}
+            \in M_{2m\times2n}(\mathbb{C}).
+            \]
+        </div>
+
+
+        <!-- LANGKAH 2 -->
+        <div class="proof-state" data-proof="2">
+
+            <p>
+                Matriks orthogonal \(P_m\) dan \(P_n\) diberikan oleh
+            </p>
+
+            \[
+            P_m=
+            \frac{1}{\sqrt2}
+            \begin{bmatrix}
+            I_m&I_m\\
+            -I_m&I_m
+            \end{bmatrix},
+            \qquad
+            P_n=
+            \frac{1}{\sqrt2}
+            \begin{bmatrix}
+            I_n&I_n\\
+            -I_n&I_n
+            \end{bmatrix}.
+            \]
+
+        </div>
+
+
+        <!-- LANGKAH 3 -->
+        <div class="proof-state" data-proof="3">
+
+            <p>
+                Diperhatikan
+            </p>
+
+            \[
+            P_m^T\sigma(A)P_n
+            =
+            \frac{1}{\sqrt2}
+            \begin{bmatrix}
+            I_m&-I_m\\
+            I_m&I_m
+            \end{bmatrix}
+            \begin{bmatrix}
+            B_1&B_2\\
+            B_2&B_1
+            \end{bmatrix}
+            \frac{1}{\sqrt2}
+            \begin{bmatrix}
+            I_n&I_n\\
+            -I_n&I_n
+            \end{bmatrix}.
+            \]
+
+        </div>
+
+
+        <!-- LANGKAH 4 -->
+        <div class="proof-state" data-proof="4">
+
+            <p>
+                Dengan perkalian blok matriks diperoleh
+            </p>
+
+            \[
+            P_m^T\sigma(A)P_n
+            =
+            \frac12
+            \begin{bmatrix}
+            B_1-B_2&B_2-B_1\\
+            B_1+B_2&B_2+B_1
+            \end{bmatrix}
+            \begin{bmatrix}
+            I_n&I_n\\
+            -I_n&I_n
+            \end{bmatrix}.
+            \]
+
+        </div>
+
+
+        <!-- LANGKAH 5 -->
+        <div class="proof-state" data-proof="5">
+
+            \[
+            \begin{aligned}
+            P_m^T\sigma(A)P_n
+            &=
+            \frac12
+            \begin{bmatrix}
+            (B_1-B_2)-(B_2-B_1)
+            &
+            (B_1-B_2)+(B_2-B_1)
+            \\[4pt]
+            (B_1+B_2)-(B_2+B_1)
+            &
+            (B_1+B_2)+(B_2+B_1)
+            \end{bmatrix}.
+            \end{aligned}
+            \]
+
+        </div>
+
+
+        <!-- LANGKAH 6 -->
+        <div class="proof-state" data-proof="6">
+
+            \[
+            \begin{aligned}
+            P_m^T\sigma(A)P_n
+            &=
+            \frac12
+            \begin{bmatrix}
+            2(B_1-B_2)&O\\
+            O&2(B_1+B_2)
+            \end{bmatrix}\\[4pt]
+            &=
+            \begin{bmatrix}
+            B_1-B_2&O\\
+            O&B_1+B_2
+            \end{bmatrix}.
+            \end{aligned}
+            \]
+
+        </div>
+
+
+        <!-- LANGKAH 7 -->
+        <div class="proof-state" data-proof="7">
+
+            <p>
+                Dengan menggunakan definisi
+                \(B_1^c=B_1-B_2\) dan
+                \(B_2^c=B_1+B_2\), diperoleh
+            </p>
+
+            \[
+            \boxed{
+            P_m^T\sigma(A)P_n
+            =
+            \begin{bmatrix}
+            B_1^c&O\\
+            O&B_2^c
+            \end{bmatrix}
+            }.
+            \]
+
+        </div>
+
+    </div>
+
+    <!-- tombol fragment tersembunyi -->
+    <span class="fragment proof-switch"
+          data-fragment-index="1"></span>
+    <span class="fragment proof-switch"
+          data-fragment-index="2"></span>
+    <span class="fragment proof-switch"
+          data-fragment-index="3"></span>
+    <span class="fragment proof-switch"
+          data-fragment-index="4"></span>
+    <span class="fragment proof-switch"
+          data-fragment-index="5"></span>
+    <span class="fragment proof-switch"
+          data-fragment-index="6"></span>
+
+</section>
+
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 20 — NORMA FROBENIUS -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Norma Frobenius</h2>
+
+    <p>
+        Untuk
+        \[
+        A=A_0+A_1i+A_2j+A_3k
+        =
+        [a_{ij}],
+        \]
+        norma Frobenius didefinisikan sebagai
+    </p>
+
+    <p>
+        \[
+        \boxed{
+        \|A\|_F
+        =
+        \sqrt{
+        \|A_0\|_F^2+
+        \|A_1\|_F^2+
+        \|A_2\|_F^2+
+        \|A_3\|_F^2
+        }
+        }
+        \]
+    </p>
+
+    <p class="fragment">
+        atau
+        \[
+        \|A\|_F
+        =
+        \sqrt{
+        \sum_{i,j}\|a_{ij}\|^2
+        }.
+        \]
+    </p>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 21 — MATRIKS P_t -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Transformasi Blok</h2>
+
+    <p>
+        Didefinisikan matriks
+        \(P_t\in M_{2t\times2t}(\mathbb{R})\)
+        sebagai
+    </p>
+
+    <p>
+        \[
+        \boxed{
+        P_t=
+        \frac{1}{\sqrt2}
+        \begin{bmatrix}
+        I_t&I_t\\
+        -I_t&I_t
+        \end{bmatrix}
+        }
+        \]
+    </p>
+
+    <p class="fragment">
+        dengan \(I_t\) merupakan matriks identitas
+        berukuran \(t\times t\).
+    </p>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 22 — BLOK DIAGONAL -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Transformasi ke Bentuk Blok Diagonal</h2>
+
+    <p>
+        Diberikan
+        \[
+        A=B_1+B_2j
+        =
+        B_1^ce_1+B_2^ce_2,
+        \]
+        dengan
+    </p>
+
+    <div class="fragment">
+        \[
+        B_1^c=B_1-B_2,
+        \qquad
+        B_2^c=B_1+B_2.
+        \]
+    </div>
+
+    <div class="fragment">
+        \[
+        P_m^T\sigma(A)P_n
+        =
+        \begin{bmatrix}
+        B_1^c&0\\
+        0&B_2^c
+        \end{bmatrix}.
+        \]
+    </div>
+
+    <p class="fragment">
+        Dengan demikian, masalah pada matriks RB dapat
+        direduksi menjadi masalah pada matriks kompleks.
+    </p>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 23 — MENGAPA SVD? -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Mengapa Menggunakan SVD?</h2>
+
+    <p>
+        Setelah matriks RB direpresentasikan ke dalam
+        matriks kompleks, diperlukan suatu dekomposisi
+        yang dapat mengungkap struktur matriks tersebut.
+    </p>
+
+    <div class="fragment">
+        \[
+        \boxed{
+        A=U\Sigma V^*
+        }
+        \]
+    </div>
+
+    <div class="fragment">
+        <p>
+            SVD memberikan:
+        </p>
+
+        <ul>
+            <li>nilai singular matriks,</li>
+            <li>informasi mengenai rank,</li>
+            <li>struktur ruang baris dan ruang kolom,</li>
+            <li>serta dasar untuk invers Moore--Penrose.</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 24 — SVD MATRIKS KOMPLEKS -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Singular Value Decomposition</h2>
+
+    <p>
+        Diberikan matriks kompleks
+        \(A\in M_{m\times n}(\mathbb{C})\)
+        dengan
+        \(\operatorname{rank}(A)=r\).
+    </p>
+
+    <p class="fragment">
+        Terdapat dekomposisi
+    </p>
+
+    <p class="fragment">
+        \[
+        \boxed{
+        A=U\Sigma_A V^*
+        }
+        \]
+    </p>
+
+    <p class="fragment">
+        dengan \(U\) dan \(V\) merupakan matriks uniter,
+        sedangkan \(\Sigma_A\) memuat nilai-nilai singular
+        \[
+        \sigma_1\geq\sigma_2\geq\cdots\geq\sigma_r>0.
+        \]
+    </p>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SLIDE 25 — KONSTRUKSI RB-SVD -->
+<!-- ===================================================== -->
+
+<section>
+    <h2>Konstruksi RB-SVD</h2>
+
+    <p>
+        Untuk matriks biquaternion tereduksi
+        \(A\), representasi kompleksnya memenuhi
+    </p>
+
+    <p>
+        \[
+        \sigma(A)
+        =
+        \sigma(U)\sigma(\Sigma)
+        \bigl(\sigma(V)\bigr)^*.
+        \]
+    </p>
+
+    <div class="fragment">
+        <p>
+            Dengan demikian, SVD pada matriks RB
+            dapat dikonstruksi melalui SVD pada representasi
+            kompleksnya.
+        </p>
+    </div>
+
+    <div class="fragment">
+        \[
+        \boxed{
+        \sigma(A)=U_c\Sigma_cV_c^*
+        }
+        \]
+    </div>
+</section>
+
+
+    </div>
+</div>
+
+
+<!-- Reveal.js -->
+<script src="node_modules/reveal.js/dist/reveal.js"></script>
+
+<!-- MathJax untuk rumus -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<script>
+    Reveal.initialize({
+        transition: 'fade',
+        slideNumber: 'c'
+    });
+</script>
+
+<script>
+
+function setProofState(slide, proofNumber) {
+
+    const proofStates =
+        slide.querySelectorAll('.bukti-state');
+
+    proofStates.forEach(function(state) {
+        state.classList.remove('active');
+    });
+
+    const activeProof =
+        slide.querySelector(
+            '.bukti-state[data-proof="' +
+            proofNumber +
+            '"]'
+        );
+
+    if (activeProof) {
+        activeProof.classList.add('active');
+    }
+}
+
+
+/* ==========================================
+   FRAGMENT MUNCUL
+   ========================================== */
+
+Reveal.on('fragmentshown', function(event) {
+
+    const fragment = event.fragment;
+
+    const slide =
+        fragment.closest('.slide-teorema-sigma');
+
+    if (!slide) return;
+
+
+    const proofState =
+        fragment.closest('.bukti-state');
+
+
+    /* Jika fragment adalah bagian dari bukti */
+    if (proofState) {
+
+        const proofNumber =
+            proofState.getAttribute('data-proof');
+
+        setProofState(
+            slide,
+            proofNumber
+        );
+
+        return;
+    }
+
+
+    /* Jika yang muncul adalah sifat berikutnya */
+    const index =
+        parseInt(
+            fragment.getAttribute('data-fragment-index')
+        );
+
+
+    if (index === 10) {
+        setProofState(slide, 2);
+    }
+
+    else if (index === 17) {
+        setProofState(slide, 3);
+    }
+
+    else if (index === 22) {
+        setProofState(slide, 4);
+    }
+
+});
+
+
+/* ==========================================
+   FRAGMENT HILANG SAAT KEMBALI
+   ========================================== */
+
+Reveal.on('fragmenthidden', function(event) {
+
+    const fragment = event.fragment;
+
+    const slide =
+        fragment.closest('.slide-teorema-sigma');
+
+    if (!slide) return;
+
+
+    const proofState =
+        fragment.closest('.bukti-state');
+
+
+    /*
+     * Kalau yang dihilangkan adalah baris bukti,
+     * cek apakah masih ada baris bukti yang terlihat.
+     */
+
+    if (proofState) {
+
+        const masihAda =
+            proofState.querySelector(
+                '.fragment.visible'
+            );
+
+        if (masihAda) {
+            return;
+        }
+
+
+        const proofNumber =
+            parseInt(
+                proofState.getAttribute('data-proof')
+            );
+
+
+        if (proofNumber > 1) {
+            setProofState(
+                slide,
+                proofNumber - 1
+            );
+        }
+        else {
+            setProofState(slide, 1);
+        }
+
+        return;
+    }
+
+
+    /*
+     * Kalau sifat berikutnya dihilangkan
+     * saat tombol back ditekan.
+     */
+
+    const index =
+        parseInt(
+            fragment.getAttribute('data-fragment-index')
+        );
+
+
+    if (index === 10) {
+        setProofState(slide, 1);
+    }
+
+    else if (index === 17) {
+        setProofState(slide, 2);
+    }
+
+    else if (index === 22) {
+        setProofState(slide, 3);
+    }
+
+});
+
+
+/* ==========================================
+   MASUK KE SLIDE
+   ========================================== */
+
+Reveal.on('slidechanged', function(event) {
+
+    const slide = event.currentSlide;
+
+    if (
+        !slide.classList.contains(
+            'slide-teorema-sigma'
+        )
+    ) {
+        return;
+    }
+
+    setProofState(slide, 1);
+
+});
+
+/* ==========================================
+   KETIKA KLIK BERIKUTNYA
+   ========================================== */
+
+Reveal.on('fragmentshown', function(event) {
+
+    const slide =
+        event.fragment.closest('.slide-teorema-sigma');
+
+    if (!slide) {
+        return;
+    }
+
+    updateProof(slide);
+
+});
+
+
+/* ==========================================
+   KETIKA KLIK KEMBALI
+   ========================================== */
+
+Reveal.on('fragmenthidden', function(event) {
+
+    const slide =
+        event.fragment.closest('.slide-teorema-sigma');
+
+    if (!slide) {
+        return;
+    }
+
+    updateProof(slide);
+
+});
+
+
+/* ==========================================
+   KETIKA MASUK KE SLIDE
+   ========================================== */
+
+Reveal.on('slidechanged', function(event) {
+
+    const slide = event.currentSlide;
+
+    if (!slide.classList.contains('slide-teorema-sigma')) {
+        return;
+    }
+
+    updateProof(slide);
+
+});
+
+</script>
+
+/* ==========================================
+   SLIDE 15 — PERGANTIAN CONTOH / DEFINISI
+   ========================================== */
+
+function setNormaState(slide, stateNumber) {
+
+    const states =
+        slide.querySelectorAll('.norma-state');
+
+    states.forEach(function(state) {
+        state.classList.remove('active');
+    });
+
+    const activeState =
+        slide.querySelector(
+            '.norma-state[data-state="' +
+            stateNumber +
+            '"]'
+        );
+
+    if (activeState) {
+        activeState.classList.add('active');
+    }
+}
+
+
+/* Saat fragment muncul */
+Reveal.on('fragmentshown', function(event) {
+
+    const fragment = event.fragment;
+
+    if (!fragment.classList.contains('norma-switch')) {
+        return;
+    }
+
+    const slide =
+        fragment.closest('.slide-norma-frobenius');
+
+    if (!slide) return;
+
+    const nextState =
+        parseInt(
+            fragment.getAttribute('data-next-state')
+        );
+
+    setNormaState(slide, nextState);
+});
+
+
+/* Saat kembali dengan tombol kiri */
+Reveal.on('fragmenthidden', function(event) {
+
+    const fragment = event.fragment;
+
+    if (!fragment.classList.contains('norma-switch')) {
+        return;
+    }
+
+    const slide =
+        fragment.closest('.slide-norma-frobenius');
+
+    if (!slide) return;
+
+    const nextState =
+        parseInt(
+            fragment.getAttribute('data-next-state')
+        );
+
+    setNormaState(
+        slide,
+        nextState - 1
+    );
+});
+
+
+/* Saat pertama masuk slide */
+Reveal.on('slidechanged', function(event) {
+
+    const slide = event.currentSlide;
+
+    if (
+        !slide.classList.contains(
+            'slide-norma-frobenius'
+        )
+    ) {
+        return;
+    }
+
+    setNormaState(slide, 1);
+});
+
+
+<script>
+function setProofState(slide, proofNumber) {
+    const states = slide.querySelectorAll('.proof-state');
+
+    states.forEach(state => {
+        state.classList.remove('active');
+    });
+
+    const activeState = slide.querySelector(
+        '.proof-state[data-proof="' + proofNumber + '"]'
+    );
+
+    if (activeState) {
+        activeState.classList.add('active');
+    }
+}
+
+
+Reveal.on('fragmentshown', function(event) {
+
+    const fragment = event.fragment;
+
+    if (!fragment.classList.contains('proof-switch')) return;
+
+    const slide = fragment.closest('.slide-bukti-blok');
+
+    if (!slide) return;
+
+    const index =
+        parseInt(fragment.getAttribute('data-fragment-index'));
+
+    setProofState(slide, index + 1);
+});
+
+
+Reveal.on('fragmenthidden', function(event) {
+
+    const fragment = event.fragment;
+
+    if (!fragment.classList.contains('proof-switch')) return;
+
+    const slide = fragment.closest('.slide-bukti-blok');
+
+    if (!slide) return;
+
+    const index =
+        parseInt(fragment.getAttribute('data-fragment-index'));
+
+    setProofState(slide, index);
+});
+
+
+Reveal.on('slidechanged', function(event) {
+
+    const slide = event.currentSlide;
+
+    if (!slide.classList.contains('slide-bukti-blok')) return;
+
+    setProofState(slide, 1);
+});
+</script>
+
+
+
+<script src="js/rb-effects.js"></script>
+</body>
+</html>
