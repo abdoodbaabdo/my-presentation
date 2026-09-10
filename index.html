@@ -758,10 +758,10 @@
 
 .restoration-item img {
     width: auto !important;
-    height: 500px !important;
+    height: min(500px, 60vh) !important;
+    max-height: 60vh !important;
 
     max-width: none !important;
-    max-height: none !important;
 
     object-fit: contain !important;
 
@@ -3765,7 +3765,14 @@ Operasi perkalian pada \(\mathbb{RB}\) bersifat komutatif, yaitu untuk setiap \(
 
 <script>
     Reveal.initialize({
-        transition: 'fade',
+        width: 1280,
+        height: 720,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 1,
+        transition: 'convex',
+        transitionSpeed: 'slow',
+        backgroundTransition: 'fade',
         slideNumber: 'c'
     });
 </script>
